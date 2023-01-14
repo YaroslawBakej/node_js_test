@@ -2,13 +2,11 @@ let data = document.querySelector(".getData")
 let arr = []
 
 data.addEventListener("click", async () => {
-    let result = document.querySelector('.result')
+    arr=[]
     let url = 'https://fe.it-academy.by/Examples/words_tree/root.txt'
     await getData(url)
-    result.textContent = arr.join(` `)
+    
 })
-
-
 
 async function getData(url) {
     let x
@@ -23,4 +21,7 @@ async function getData(url) {
     } catch (error) {
         if (typeof x == "string") arr.push(x)
     }
+    
+    let result = document.querySelector('.result')
+    result.textContent = arr.join(` `)
 }
