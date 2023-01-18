@@ -1,31 +1,46 @@
+
+
 let data = document.querySelector(".getData")
 let arr = []
 
 data.addEventListener("click", () => {
-    arr = []
     let url = 'https://fe.it-academy.by/Examples/words_tree/root.txt'
-    getData(url)
+    arr = []
+    fetch(url)
+        .then(response => response.text())
+        .then(responsedata => createRequestTurn(responsedata))
+    setTimeout(() => {
+        useRequestTurn(arr)
+    }, 1000);
 })
 
-function getData(url) {
+function createRequestTurn(responsedata) {
     let x
-    fetch(url)
-        .then(response => {
-            let data = response.text()
-            return data
-        })
-        .then(data => {
-            try {
-                x = data
-                let jsonData = JSON.parse(data)
-                for (let i = 0; i < jsonData.length; i++) {
-                    getData(`https://fe.it-academy.by/Examples/words_tree/${jsonData[i]} `)
-                }
-            } catch (error) {
-                if (typeof x == "string") arr.push(x)
-                let result = document.querySelector('.result')
-                result.textContent = arr.join(` `)
-            }
-        })
+    try {
+        x = responsedata
+        let jsonData = JSON.parse(responsedata)
+        for (let i = 0; i < jsonData.length; i++) {
+            arr.push(`https://fe.it-academy.by/Examples/words_tree/${jsonData[i]} `)
+            fetch(`https://fe.it-academy.by/Examples/words_tree/${jsonData[i]} `)
+                .then(response => response.text())
+                .then(responsedata => createRequestTurn(responsedata))
+        }
+    } catch (error) {
+        console.log(arr);
+
+    }
 }
+
+function useRequestTurn(arr) {
+    // for (let i = 0; i < arr.length; i++) {
+    //     fetch(arr[i])
+    //         .then(response => response.text())
+    //         .then(data => console.log(data))
+    }
+
+// }\
+
+
+
+
 
